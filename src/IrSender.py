@@ -20,7 +20,7 @@ class IrSender:
 
     def __init__(self):
         self.notified_sig_id = None
-        self.set_status("booting")  # TODO 各stateの定義を明確にする
+        self.set_status("booting")
 
     def send_signal(self, signal_id):
         self.set_state("sending")
@@ -31,6 +31,8 @@ class IrSender:
         if not pi.connected:
             # エラーメッセージを出してこの処理を終了
             print("failed to connect to GPIO!")
+            # stateをreadyに戻す
+            self.set_state("ready")
             return
 
         with open(filename) as f:
