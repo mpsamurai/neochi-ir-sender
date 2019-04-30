@@ -93,7 +93,7 @@ class IrSender:
 
         # ----- irrp.pyの抜粋ここまで -----
 
-        CompleteIrSendingNotification.value = signal_id  # notify the end of sending
+        CompleteIrSending.value = signal_id  # notify the end of sending
         self.set_state("ready")
 
     def start(self):
@@ -101,11 +101,11 @@ class IrSender:
             self.notified_sig_id = value
             self.send_signal(self.notified_sig_id)
 
-        StartIrSendingNotification.subscribe(callback)
+        StartIrSending.subscribe(callback)
         self.set_state("ready")
 
     def stop(self):
-        StartIrSendingNotification.unsubscribe()
+        StartIrSending.unsubscribe()
         self.set_status("dead")
 
 
