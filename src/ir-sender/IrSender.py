@@ -119,3 +119,8 @@ class IrSender:
     def stop(self):
         StartIrSending.unsubscribe()
         self.set_state("dead")
+
+if __name__ == '__main__':
+    logger.info("***start ir-sender***")
+    irsender = IrSender()
+    irsender.start()
