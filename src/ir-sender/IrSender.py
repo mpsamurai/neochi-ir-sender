@@ -2,11 +2,17 @@ import redis
 import pigpio
 import json
 import time
+
 from neochi.core.dataflow.data.ir_sender import State
 from neochi.core.dataflow.notifications.ir_sender import *
 from . import irrp
+from . import logger_config
+from logging import getLogger
 
-GPIO = 18  # TODO confirm
+
+logger = getLogger(__name__)
+
+GPIO = 18
 FREQ = 38.0  # irrp.pyのデフォルト値を参照
 GAP_S = 100/1000.0  # irrp.pyのデフォルト値を参照
 
@@ -20,7 +26,7 @@ class IrSender:
 
     def __init__(self):
         self.notified_sig_id = None
-        self.set_status("booting")
+        self.set_state("booting")
 
     def send_signal(self, signal_id):
         self.set_state("sending")
@@ -106,6 +112,6 @@ class IrSender:
 
     def stop(self):
         StartIrSending.unsubscribe()
-        self.set_status("dead")
+        self.set_state("dead")
 
 
