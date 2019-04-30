@@ -4,7 +4,7 @@ import json
 import time
 from neochi.core.dataflow.data.ir_sender import State
 from neochi.core.dataflow.notifications.ir_sender import *
-import irrp
+from . import irrp
 
 GPIO = 18  # TODO confirm
 FREQ = 38.0  # irrp.pyのデフォルト値を参照
