@@ -5,10 +5,10 @@ import time
 
 from neochi.core.dataflow.data.ir_sender import State
 from neochi.core.dataflow.notifications.ir_sender import *
-from . import irrp
 from . import logger_config
 from logging import getLogger
 
+# irrp.py from http://abyz.me.uk/rpi/pigpio/examples.html#Python%20code
 
 logger = getLogger(__name__)
 
@@ -33,6 +33,25 @@ class IrSender:
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is not None:
             logger.error(str(exc_type) + ":" + str(exc_tb))
+
+    @staticmethod
+    def carrier(gpio, frequency, micros):
+        """
+        Generate carrier square wave.
+        """
+        wf = []
+        cycle = 1000.0 / frequency
+        cycles = int(round(micros / cycle))
+        on = int(round(cycle / 2.0))
+        sofar = 0
+        for c in range(cycles):
+            target = int(round((c + 1) * cycle))
+            sofar += on
+            off = target - sofar
+            sofar += off
+            wf.append(pigpio.pulse(1 << gpio, 0, on))
+            wf.append(pigpio.pulse(0, 1 << gpio, off))
+        return wf
 
     def send_signal(self, signal_id):
         self.set_state("sending")
@@ -72,7 +91,7 @@ class IrSender:
                     wave[i] = spaces_wid[ci]
                 else:
                     if ci not in marks_wid:
-                        wf = irrp.carrier(GPIO, FREQ, ci)
+                        wf = self.carrier(GPIO, FREQ, ci)
                         pi.wave_add_generic(wf)
                         marks_wid[ci] = pi.wave_create()
                     wave[i] = marks_wid[ci]
@@ -119,6 +138,7 @@ class IrSender:
     def stop(self):
         StartIrSending.unsubscribe()
         self.set_state("dead")
+
 
 if __name__ == '__main__':
     logger.info("***start ir-sender***")
