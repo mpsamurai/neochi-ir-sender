@@ -7,3 +7,4 @@ WORKDIR /code
 COPY ./src .
 
 CMD ["nosetests", "--with-coverage", "--cover-html", "--cover-package", "ir-sender"]
+CMD ["nosetests", "--with-coverage", "--cover-html", "--cover-package", "neochi"]
