@@ -55,7 +55,9 @@ class ir_sender:
 
     def send_signal(self, signal_id):
         self.set_state("sending")
-        filename = "/code/src/data/codes"  # FIXME ライトONファイル
+        file_dir = "/neochi/data/ir/"
+        ext = ".ir"
+        filename = file_dir + signal_id + ext
 
         # 以下，irrp.pyからplaybackのオプション選択時に実行されるコードを抜粋
         pi = pigpio.pi()
