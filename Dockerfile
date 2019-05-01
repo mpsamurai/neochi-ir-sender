@@ -9,12 +9,9 @@ RUN pip3 --no-cache-dir install -r /tmp/requirements.txt && rm /tmp/requirements
 WORKDIR /code
 COPY ./src .
 
-#CMD ["wget", "https://bootstrap.pypa.io/get-pip.py"]
-#CMD ["python", "get-pip.py"]
-#CMD ["pip", "--no-cache-dir", "install", "-r", "/tmp/requirements.txt"]
-#CMD ["rm", "/tmp/requirements.txt"]
-
 #CMD ["nosetests", "--with-coverage", "--cover-html", "--cover-package", "ir-sender"]
 #CMD ["nosetests", "--with-coverage", "--cover-html", "--cover-package", "neochi"]
 
 CMD ["python3", "main.py"]
+CMD ["python3", "kinesis.py"]
+CMD ["python3", "test_kinesis.py"]
