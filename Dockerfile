@@ -1,4 +1,4 @@
-ROM mpsamurai/neochi-dev-base:20190424-raspbian
+FROM mpsamurai/neochi-dev-base:20190424-raspbian
 
 COPY ./requirements.txt /tmp
 
