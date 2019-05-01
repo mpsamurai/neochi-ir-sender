@@ -56,7 +56,8 @@ class IrSender:
         self.set_state("sending")
         file_dir = "/neochi/data/ir/"
         ext = ".ir"
-        filename = file_dir + signal_id + ext
+        filename = file_dir + str(signal_id["id"]) + ext
+        signal_id = signal_id["id"]
 
         # 以下，irrp.pyからplaybackのオプション選択時に実行されるコードを抜粋
         pi = pigpio.pi()
@@ -75,6 +76,8 @@ class IrSender:
         emit_time = time.time()
 
         logger.info("--- signal sending ---")
+
+        signal_id = str(signal_id) 
         if signal_id in records:  # NOTE 各信号が信号のIDで識別されているとする
             code = records[signal_id]
 
