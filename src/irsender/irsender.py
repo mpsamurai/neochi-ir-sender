@@ -4,7 +4,7 @@ import json
 import time
 
 from neochi.core.dataflow.data.ir_sender import State
-from neochi.core.dataflow.notifications.ir_sender import *
+from neochi.core.dataflow.notifications import ir_sender as notification
 from . import logger_config
 from logging import getLogger
 
@@ -126,7 +126,8 @@ class IrSender:
 
         # ----- irrp.pyの抜粋ここまで -----
 
-        CompleteIrSending.value = signal_id  # notify the end of sending
+        complete_ir_sending = notification.CompleteIrSending()
+        complete_ir_sending.value = signal_id  # notify the end of sending
         self.set_state("ready")
 
     def start(self):
@@ -134,10 +135,12 @@ class IrSender:
             self.notified_sig_id = value
             self.send_signal(self.notified_sig_id)
 
-        StartIrSending.subscribe(callback)
+        start_ir_sending = notification.StartIrSending()
+        start_ir_sending.subscribe(callback)
         self.set_state("ready")
 
     def stop(self):
-        StartIrSending.unsubscribe()
+        start_ir_sending = notification.StartIrSending()
+        start_ir_sending.unsubscribe()
         self.set_state("dead")
 
