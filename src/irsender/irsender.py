@@ -17,7 +17,7 @@ FREQ = 38.0  # irrp.pyのデフォルト値を参照
 GAP_S = 100/1000.0  # irrp.pyのデフォルト値を参照
 
 
-class ir_sender:
+class IrSender:
 
     @staticmethod
     def set_state(val):

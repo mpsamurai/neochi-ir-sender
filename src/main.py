@@ -1,5 +1,5 @@
-from irsender import ir_sender
-irsender = ir_sender()
+from irsender.irsender import IrSender
+irsender = IrSender()
 irsender.start()
 
 
