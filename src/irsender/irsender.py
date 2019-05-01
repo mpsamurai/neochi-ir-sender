@@ -19,20 +19,19 @@ GAP_S = 100/1000.0  # irrp.pyのデフォルト値を参照
 
 class IrSender:
 
-    @staticmethod
-    def set_state(val):
-        r = redis.StrictRedis('localhost', 6379, db=0)
-        state_data = State(r)
-        state_data.value = val
-        logger.info('Status set to: ' + val)
-
     def __init__(self):
         self.notified_sig_id = None
+        self._r = redis.StrictRedis('localhost', 6379, db=0)
+        self._state_data = State(self._r)
         self.set_state("booting")
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is not None:
             logger.error(str(exc_type) + ":" + str(exc_tb))
+
+    def set_state(self, val):
+        self._state_data.value = val
+        logger.info('Status set to: ' + val)
 
     @staticmethod
     def carrier(gpio, frequency, micros):
@@ -126,7 +125,7 @@ class IrSender:
 
         # ----- irrp.pyの抜粋ここまで -----
 
-        complete_ir_sending = notification.CompleteIrSending('localhost')
+        complete_ir_sending = notification.CompleteIrSending(self._r)
         complete_ir_sending.value = signal_id  # notify the end of sending
         self.set_state("ready")
 
@@ -135,12 +134,12 @@ class IrSender:
             self.notified_sig_id = value
             self.send_signal(self.notified_sig_id)
 
-        start_ir_sending = notification.StartIrSending('localhost')
+        start_ir_sending = notification.StartIrSending(self._r)
         start_ir_sending.subscribe(callback)
         self.set_state("ready")
 
     def stop(self):
-        start_ir_sending = notification.StartIrSending('localhost')
+        start_ir_sending = notification.StartIrSending(self._r)
         start_ir_sending.unsubscribe()
         self.set_state("dead")
 
