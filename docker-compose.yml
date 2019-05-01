@@ -5,7 +5,7 @@ services:
     image: arm32v6/redis
     ports:
       - 6379:6379
-    net: "host"
+    network_mode: "host"
   ir-sender:
     build: .
     volumes:
@@ -13,4 +13,4 @@ services:
       - ../neochi-core/src/neochi:/code/neochi
     depends_on:
       - redis
-    net: "host"
+    network_mode: "host"
