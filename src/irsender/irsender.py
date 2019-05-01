@@ -130,7 +130,7 @@ class IrSender:
         self.set_state("ready")
 
     def start(self):
-        def callback(value):
+        def callback(value, channel):
             self.notified_sig_id = value
             self.send_signal(self.notified_sig_id)
 
