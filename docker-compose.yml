@@ -5,6 +5,7 @@ services:
     image: redis
     ports:
       - 6379:6379
+    net: "host"
   ir-sender:
     build: .
     volumes:
@@ -12,3 +13,4 @@ services:
       - ../neochi-core/src/neochi:/code/neochi
     depends_on:
       - redis
+    net: "host"
