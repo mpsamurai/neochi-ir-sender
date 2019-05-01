@@ -20,8 +20,8 @@ GAP_S = 100/1000.0  # irrp.pyのデフォルト値を参照
 class ir_sender:
 
     @staticmethod
-    def set_state(self, val):
-        r = redis.StrictRedis('redis', 6379, db=0)
+    def set_state(val):
+        r = redis.StrictRedis('localhost', 6379, db=0)
         state_data = State(r)
         state_data.value = val
         logger.info('Status set to: ' + val)
