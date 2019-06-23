@@ -54,9 +54,9 @@ class IrSender:
 
     def send_signal(self, signal_id):
         self.set_state("sending")
-        file_dir = "/neochi/data/ir/"
+        file_dir = "/data/"
         ext = ".ir"
-        filename = file_dir + signal_id + ext
+        filename = file_dir + str(signal_id) + ext
 
         # 以下，irrp.pyからplaybackのオプション選択時に実行されるコードを抜粋
         pi = pigpio.pi()
@@ -75,8 +75,10 @@ class IrSender:
         emit_time = time.time()
 
         logger.info("--- signal sending ---")
-        if signal_id in records:  # NOTE 各信号が信号のIDで識別されているとする
-            code = records[signal_id]
+
+        # *.ir のキーは "0" 1つのみでその内容を送信する
+        for rec in records:
+            code = records[rec]
 
             # Create wave
             marks_wid = {}
@@ -117,9 +119,6 @@ class IrSender:
                 pi.wave_delete(spaces_wid[i])
 
             spaces_wid = {}
-
-        else:
-            logger.error("No Signal ID: " + str(signal_id))
 
         pi.stop()
 

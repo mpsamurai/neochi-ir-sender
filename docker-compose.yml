@@ -11,7 +11,7 @@ services:
     volumes:
       - ./src:/code
       - ../neochi-core/src/neochi:/code/neochi
-      - ./data:/neochi/data
+      - ./data:/data
     depends_on:
       - redis
     network_mode: "host"
